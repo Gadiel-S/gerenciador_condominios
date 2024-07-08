@@ -1,0 +1,36 @@
+{
+  "condominio": {
+    "despesas": [
+      {
+        "nome": "Energia",
+        "valor": 100,
+        "data_emissao": "04/07/2024"
+      },
+      {
+        "nome": "Limpeza",
+        "valor": 100,
+        "data_emissao": "04/07/2024"
+      },
+      {
+        "nome": "Energia",
+        "valor": 110,
+        "data_emissao": "04/07/2025"
+      },
+      {
+        "nome": "Limpeza",
+        "valor": 110,
+        "data_emissao": "04/07/2025"
+      }
+    ],
+    "receita": [
+      {
+        "nome": "Apartamento 101 BL 02",
+        "valor": 50
+      },
+      {
+        "nome": "Apartamento 102 BL 02",
+        "valor": 50
+      }
+    ]
+  }
+}

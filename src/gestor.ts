@@ -5,7 +5,7 @@ export class Gestor {
   condominio: Condominio;
   apartamentos: Apartamento[];
   
-  dividaFactory:DividaFactory;
+  private dividaFactory:DividaFactory;
 
   constructor(dividaFactory:DividaFactory){
     this.condominio = {
@@ -21,14 +21,20 @@ export class Gestor {
   }
 
   cadastrarApartamento = (apartamento:Apartamento) => {
-    const dividas: Divida[] = this.dividaFactory.gerarDivida();
-    apartamento.dividas.push(...dividas);
     this.apartamentos.push(apartamento);
-  }  
+  }
 
-  registrarPagamento = (divida: Divida) => {
+  cadastrarDivida(apartamento: Apartamento, divida: Divida[]){
+    // const dividas: Divida[] = this.dividaFactory.gerarDivida();
+    apartamento.dividas.push(...divida);
+  }
+
+  registrarPagamento = (apartamento: Apartamento, divida: Divida) => {
     const dataPagamento = new Date();    
     divida.data_pagamento = dataPagamento;
+    const dividaIndice = apartamento.dividas.indexOf(divida);
+    apartamento.dividas.splice(dividaIndice, 1);
+    apartamento.pagamentos.push(divida);
     this.condominio.receitas.push({nome: divida.descricao, valor: divida.valor, data_emissao: dataPagamento});
   }
 

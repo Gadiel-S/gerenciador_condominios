@@ -17,14 +17,16 @@ export interface Despesa {
 
 export class Apartamento {
 
+  id: string;
   numero: number;
   morador: string;
   dividas: Divida[];
 
-  constructor(numero: number, morador: string, dividas: Divida[],){
+  constructor(numero: number, morador: string, dividas: Divida[],id: string){
     this.numero = numero;
     this.morador = morador;
     this.dividas = dividas;
+    this.id = id;
   }
 
   get pagamentos(){

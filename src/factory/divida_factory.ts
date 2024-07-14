@@ -15,7 +15,7 @@ export class DividaFactory{
       let divida: Divida = {
         valor: 50,
         data_vencimento: dataVencimento,
-        descricao: "Comdomínio",
+        descricao: "Condomínio",
         juros_atraso_diario: 0.01,
       };
 

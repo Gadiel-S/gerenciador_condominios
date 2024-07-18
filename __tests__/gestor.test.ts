@@ -28,8 +28,8 @@ test("Deve instancia e validar se o registro do pagamento aconteceu", ()=> {
   const pedroDivida = pedroAp.dividas.find(d => d.data_pagamento == null);
   const joseDivida = joseAp.dividas.find(d => d.data_pagamento == null);
   
-  if(pedroDivida) gestor.registrarPagamento(pedroDivida);
-  if(joseDivida) gestor.registrarPagamento(joseDivida);
+  if(pedroDivida) gestor.registrarPagamento(pedroAp, pedroDivida);
+  if(joseDivida) gestor.registrarPagamento(joseAp, joseDivida);
 
   expect(pedroDivida?.data_pagamento != null);
 

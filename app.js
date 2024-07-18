@@ -8,12 +8,6 @@ app.get('/', (req, res) => {
 });
 
 // Exemplo de rota POST
-app.post('/', (req, res) => {
-  res.send('Testando!');
-});
-
-
-// Exemplo de rota POST
 app.post('/api/exemplo', (req, res) => {
   res.send('Rota POST acessada');
 });

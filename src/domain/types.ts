@@ -29,12 +29,13 @@ export class Apartamento {
     this.id = id;
   }
 
-  get pagamentos(){
-    return this.dividas.filter(divida => divida.data_pagamento != null);
-  }
+  // get pagamentos(){
+  //   return this.dividas.filter(divida => divida.data_pagamento != null);
+  // }
 }
 
 export interface Divida {
+  id: string,
   valor: number,
   data_vencimento: Date,
   descricao: string,

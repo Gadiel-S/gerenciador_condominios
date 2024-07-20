@@ -6,7 +6,7 @@ import { DividaFactory } from "../src/factory/divida_factory";
 
 test("Deve instancia e validar se o registro do pagamento aconteceu", ()=> {
     
-  const gestor = new Gestor(new DividaFactory());
+  const gestor = new Gestor(new DividaFactory(), new ApartamentoFactory());
   
   // Adicionando despesa
   const despesaFactory = new DespesaFactory();

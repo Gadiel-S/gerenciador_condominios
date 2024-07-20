@@ -1,5 +1,6 @@
 import { Divida } from "../domain/types";
 import { addMonths, set } from 'date-fns';
+import { v4 as uuidv4 } from "uuid";
 
 export class DividaFactory{
   gerarDivida(): Divida[] {
@@ -17,6 +18,7 @@ export class DividaFactory{
         data_vencimento: dataVencimento,
         descricao: "Condomínio",
         juros_atraso_diario: 0.01,
+        id: uuidv4()
       };
 
       dividas.push(divida);

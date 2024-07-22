@@ -16,35 +16,32 @@ export interface Despesa {
 }
 
 export class Apartamento {
-
   id: string;
   numero: number;
   morador: string;
   dividas: Divida[];
+  get pagamentos(){
+    return this.dividas.filter(divida => divida.dataPagamento != null);
+  }
 
   constructor(numero: number, morador: string, dividas: Divida[],id: string){
+    this.id = id;
     this.numero = numero;
     this.morador = morador;
     this.dividas = dividas;
-    this.id = id;
   }
-
-  // get pagamentos(){
-  //   return this.dividas.filter(divida => divida.data_pagamento != null);
-  // }
 }
 
 export interface Divida {
   id: string,
   valor: number,
-  data_vencimento: Date,
+  dataVencimento: Date,
   descricao: string,
-  juros_atraso_diario: number,
-  data_pagamento?: Date
+  jurosAtrasoDiario: number,
+  dataPagamento?: Date
 }
 
-export interface Pagamento
- {
+export interface Pagamento {
   valor: number,
-  data: Date,
+  data: Date
 }

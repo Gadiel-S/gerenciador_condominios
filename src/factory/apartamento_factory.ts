@@ -16,7 +16,6 @@ export class ApartamentoFactory {
       pagamentos: [],
       dividas: []
     }
-
     return apartamento;
   }
 }

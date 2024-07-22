@@ -7,86 +7,86 @@
     "dividas": [
       {
         "valor": 50,
-        "data_vencimento": "2024-08-05T23:52:04.268Z",
+        "dataVencimento": "2024-08-05T23:52:04.268Z",
         "descricao": "Condomínio",
-        "juros_atraso_diario": 0.01,
+        "jurosAtrasoDiario": 0.01,
         "id": "ef2014f8-3797-449b-b025-ab6a1f70f7bf"
       },
       {
         "valor": 50,
-        "data_vencimento": "2024-09-05T23:52:04.271Z",
+        "dataVencimento": "2024-09-05T23:52:04.271Z",
         "descricao": "Condomínio",
-        "juros_atraso_diario": 0.01,
+        "jurosAtrasoDiario": 0.01,
         "id": "21b5d395-001c-4715-b750-1fff215f6fa5"
       },
       {
         "valor": 50,
-        "data_vencimento": "2024-10-05T23:52:04.271Z",
+        "dataVencimento": "2024-10-05T23:52:04.271Z",
         "descricao": "Condomínio",
-        "juros_atraso_diario": 0.01,
+        "jurosAtrasoDiario": 0.01,
         "id": "fef237e2-3979-42ea-90c2-8ebedaa17ec1"
       },
       {
         "valor": 50,
-        "data_vencimento": "2024-11-05T23:52:04.271Z",
+        "dataVencimento": "2024-11-05T23:52:04.271Z",
         "descricao": "Condomínio",
-        "juros_atraso_diario": 0.01,
+        "jurosAtrasoDiario": 0.01,
         "id": "972c00dd-2dca-4161-9d14-be4a7c6ca479"
       },
       {
         "valor": 50,
-        "data_vencimento": "2024-12-05T23:52:04.271Z",
+        "datVencimento": "2024-12-05T23:52:04.271Z",
         "descricao": "Condomínio",
-        "juros_atraso_diario": 0.01,
+        "jurosAtrasoDiario": 0.01,
         "id": "6495c819-444e-441c-b506-2af4d189758f"
       },
       {
         "valor": 50,
-        "data_vencimento": "2025-01-05T23:52:04.271Z",
+        "datVencimento": "2025-01-05T23:52:04.271Z",
         "descricao": "Condomínio",
-        "juros_atraso_diario": 0.01,
+        "jurosAtrasoDiario": 0.01,
         "id": "d214a20b-7080-4773-8b80-236724d31dbf"
       },
       {
         "valor": 50,
-        "data_vencimento": "2025-02-05T23:52:04.271Z",
+        "datVencimento": "2025-02-05T23:52:04.271Z",
         "descricao": "Condomínio",
-        "juros_atraso_diario": 0.01,
+        "jurosAtrasoDiario": 0.01,
         "id": "5d33806d-90a7-4c08-8519-cc7193c68a45"
       },
       {
         "valor": 50,
-        "data_vencimento": "2025-03-05T23:52:04.271Z",
+        "datVencimento": "2025-03-05T23:52:04.271Z",
         "descricao": "Condomínio",
-        "juros_atraso_diario": 0.01,
+        "jurosAtrasoDiario": 0.01,
         "id": "5793a0e4-9bbb-4a78-9872-643cf5b4e0f3"
       },
       {
         "valor": 50,
-        "data_vencimento": "2025-04-05T23:52:04.271Z",
+        "dataVencimento": "2025-04-05T23:52:04.271Z",
         "descricao": "Condomínio",
-        "juros_atraso_diario": 0.01,
+        "jurosAtrasoDiario": 0.01,
         "id": "dc8f2a78-b3a1-475d-8aaf-7c5cdea2db05"
       },
       {
         "valor": 50,
-        "data_vencimento": "2025-05-05T23:52:04.271Z",
+        "dataVencimento": "2025-05-05T23:52:04.271Z",
         "descricao": "Condomínio",
-        "juros_atraso_diario": 0.01,
+        "jurosAtrasoDiario": 0.01,
         "id": "701dd99c-25d5-453f-8856-ad3ecd17b3af"
       },
       {
         "valor": 50,
-        "data_vencimento": "2025-06-05T23:52:04.271Z",
+        "dataVencimento": "2025-06-05T23:52:04.271Z",
         "descricao": "Condomínio",
-        "juros_atraso_diario": 0.01,
+        "jurosAtrasoDiario": 0.01,
         "id": "51e87f99-68bc-41db-b068-12208f76ddda"
       },
       {
         "valor": 50,
-        "data_vencimento": "2025-07-05T23:52:04.271Z",
+        "dataVencimento": "2025-07-05T23:52:04.271Z",
         "descricao": "Condomínio",
-        "juros_atraso_diario": 0.01,
+        "jurosAtrasoDiario": 0.01,
         "id": "0e6b5ebe-9b3a-43b9-bbfe-0d4799dc99f4"
       }
     ]

@@ -13,8 +13,8 @@ test("Deve instancia e validar se o registro do pagamento aconteceu", ()=> {
   const Internet = despesaFactory.adiconarDespesa("Internet", 50, new Date());
   const Limpeza = despesaFactory.adiconarDespesa("Limpeza", 80, new Date());
   
-  gestor.adicionarDespesa(Internet);
-  gestor.adicionarDespesa(Limpeza);
+  gestor.adicionarDespesaCondominio(Internet);
+  gestor.adicionarDespesaCondominio(Limpeza);
   
   // Cadastrando Apartamento
   const apartamentoFactory = new ApartamentoFactory();

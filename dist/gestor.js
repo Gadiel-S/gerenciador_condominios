@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Gestor = void 0;
 class Gestor {
     constructor(dividaFactory, apartamentoFactory) {
-        this.adicionarDespesa = (despesa) => {
+        this.adicionarDespesaCondominio = (despesa) => {
             this.condominio.despesas.push(despesa);
         };
         this.cadastrarApartamento = (apartamentoProps) => {

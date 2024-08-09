@@ -1,177 +1,134 @@
-import {
-  Condominio,
-  Despesa,
-  Apartamento,
-  Divida
-} from "./domain/types";
-import { ApartamentoFactory, CriarApartamentoProps } from "./factory/apartamento_factory";
-import { DividaFactory, CriarDividaProps } from "./factory/divida_factory";
-import { DespesaFactory, CriarDespesaProps } from "./factory/despesa_factory";
+import { ApartamentoRepository } from "./repository/apartamento_repository";
+import { DividaRepository } from "./repository/divida_repository";
+import { PagamentoRepository } from "./repository/pagamento_repository";
+import { CondominioRepository } from "./repository/condominio_repository";
+import { Apartamento } from "./entity/apartamento";
+import { Divida } from "./entity/divida";
+import { Pagamento } from "./entity/pagamento";
+import { Receita } from "./entity/receita";
+import { Despesa } from "./entity/despesa";
+import { ApartamentoProps, DividaProps, PagamentoProps, CondominioProps } from "./domain/types";
+import { Validacoes } from "./validation_functions";
 
-type ListarDividasApartamentoProps = { id_apartamento: string };
-
-type ListarPagamentosApartamentoProps = { id_apartamento: string; };
-
-type RegistrarPagamentoApartamentoProps = { id_apartamento: string; id_divida: string; };
-
-type RemoverDividaApartamentoProps = {id_divida: string, id_apartamento: string};
-
-type AdicionarReceitaCondominioProps = {id_divida: string, id_apartamento: string};
-
-type BuscarApartamentoProps = { id_apartamento: string };
-
-type BuscarDividaProps = { id_divida: string, id_apartamento: string};
-
+const validacoes = new Validacoes();
 
 export class Gestor {
-  condominio: Condominio;
-  apartamentos: Apartamento[];
-
-  private apartamentoFactory: ApartamentoFactory;
-  private dividaFactory: DividaFactory;
-  private despesaFactory: DespesaFactory;
-
+  private apartamentoRepository: ApartamentoRepository;
+  private dividaRepository: DividaRepository;
+  private pagamentoRepository: PagamentoRepository;
+  private condominioRepository: CondominioRepository;
   constructor(
-    dividaFactory: DividaFactory,
-    apartamentoFactory: ApartamentoFactory,
-    despesaFactory: DespesaFactory
+    apartamentoRepository: ApartamentoRepository,
+    dividaRepository: DividaRepository,
+    pagamentoRepository: PagamentoRepository,
+    condominioRepository: CondominioRepository
   ) {
-    this.condominio = {
-      despesas: [],
-      receitas: [],
-    };
-    this.apartamentos = [];
-    this.dividaFactory = dividaFactory;
-    this.apartamentoFactory = apartamentoFactory;
-    this.despesaFactory = despesaFactory;
+    this.apartamentoRepository = apartamentoRepository;
+    this.dividaRepository = dividaRepository;
+    this.pagamentoRepository = pagamentoRepository;
+    this.condominioRepository = condominioRepository;
   }
 
-  cadastrarApartamento = (
-    apartamentoProps: CriarApartamentoProps
-  ): Apartamento => {
-    const apartamentoJaCadastrado = this.apartamentos.find(
-      (ap) => ap.numero == apartamentoProps.numero
-    );
+  // Apartamento Funções
+  async listarApartamentos(): Promise<Apartamento[]> {
+    const apartamentos = await this.apartamentoRepository.buscarApartamentos();
+    return apartamentos;
+  }
 
-    if (apartamentoJaCadastrado) {
-      const erro = JSON.stringify({
-        apartamento: { ...apartamentoJaCadastrado },
-        error: "Apartamento já cadastrado",
-      });
-      throw new Error(erro);
-    }
-
-    const apartamento = this.apartamentoFactory.criarApartamento(apartamentoProps);
-
-    this.apartamentos.push(apartamento);
-
+  async buscarApartamento(numero: number): Promise<Apartamento> {
+    const apartamento = await this.apartamentoRepository.buscarApartamentoPeloNumero(numero);
     return apartamento;
-  };
+  }
 
-  cadastrarDivida = (
-    idApartamento: string,
-    dividaProps: CriarDividaProps
-  ): Divida => {
-    const apartamento = this.buscarApartamento({id_apartamento: idApartamento});
+  async cadastrarApartamento(apartamento: ApartamentoProps): Promise<Apartamento> {
+    validacoes.validarApartamento(apartamento);
+    const apt = await this.apartamentoRepository.cadastrarApartamento(apartamento);
+    return apt;
+  }
 
-    const divida = this.dividaFactory.criarDivida(dividaProps);
+  async atualizarApartamento(id: string, apartamento: ApartamentoProps): Promise<Apartamento> {
+    validacoes.validarApartamento(apartamento, id);
+    const apt = await this.apartamentoRepository.atualizarApartamento(id, apartamento);
+    return apt;
+  }
 
-    apartamento.dividas.push(divida);
+  async deletarApartamento(id: string): Promise<boolean> {
+    const result = await this.apartamentoRepository.deletarApartamento(id);
+    return result;
+  }
 
-    return divida;
-  };
+  // Dívida Funções
+  async listarDividas(idApartamento: string): Promise<Divida[]> {
+    const dividas = await this.dividaRepository.buscarDividas(idApartamento);
+    return dividas;
+  }
 
-  registrarPagamentoApartamento = (
-    props: RegistrarPagamentoApartamentoProps
-  ): Divida => {
-    
-    const divida = this.removerDividaApartamento(props);
+  async cadastrarDivida(idApartamento: string, divida: DividaProps): Promise<Divida> {
+    validacoes.validarDivida(divida);
+    const dividaCadastrada = await this.dividaRepository.cadastrarDivida(idApartamento, divida);
+    return dividaCadastrada;
+  }
 
-    return divida;
-   
-  };
+  async atualizarDivida(idDivida: string, divida: DividaProps): Promise<Divida> {
+    validacoes.validarDivida(divida, idDivida);
+    const dividaAtualizada = await this.dividaRepository.atualizarDivida(idDivida, divida);
+    return dividaAtualizada;
+  }
 
-  removerDividaApartamento(props: RemoverDividaApartamentoProps): Divida{
-    const divida = this.buscarDivida(props);
+  async deletarDivida(id: string): Promise<boolean> {
+    const result = await this.dividaRepository.deletarDivida(id);
+    return result;
+  }
 
-    if(divida.dataPagamento != null) throw new Error(`Pagamento registrado no dia ${ divida.dataPagamento}` );
+  // Pagamento funções
+  async listarPagamentos(idApartamento: string): Promise<Pagamento[]> {
+    const pagamentos = await this.pagamentoRepository.buscarPagamentos(idApartamento);
+    return pagamentos;
+  }
 
-    const data_pagamento = new Date();
-    divida.dataPagamento = data_pagamento;
+  async registrarPagamentoDivida(idApartamento: string, idDivida: string, pagamento: PagamentoProps): Promise<Pagamento> {
+    validacoes.validarPagamento(pagamento);
+    const pagamentoCadastrado = await this.pagamentoRepository.cadastrarPagamento(idApartamento, idDivida, pagamento);
+    return pagamentoCadastrado;
+  }
 
-    this.adicionarReceitaCondominio(props);
-    return divida;
-  };
+  async atualizarPagamento(idPagamento: string, pagamento: PagamentoProps): Promise<Pagamento> {
+    validacoes.validarPagamento(pagamento, idPagamento);
+    const pagamentoCadastrado = await this.pagamentoRepository.atualizarPagamento(idPagamento, pagamento);
+    return pagamentoCadastrado;
+  }
 
-  private adicionarReceitaCondominio(props: AdicionarReceitaCondominioProps){
-    // todo:Se a receita vir de uma doação, como resolver a receita?
-    const divida = this.buscarDivida(props)
+  async deletarPagamento(idPagamento: string): Promise<boolean> {
+    const result = await this.pagamentoRepository.deletarPagamento(idPagamento);
+    return result;
+  }
 
-    if(!divida.dataPagamento) throw new Error("Pagamento da divida pendente.")
-
-    this.condominio.receitas.push({
-      nome: divida.descricao,
-      valor: divida.valor,
-      data_emissao: divida.dataPagamento ?? new Date(),
-    });
-  };
-
-  listarDividasApartamento(props: ListarDividasApartamentoProps): Divida[] {
-    return this.buscarApartamento(props).dividas;
-  };
-
-  listarPagamentosApartamento(
-    props: ListarPagamentosApartamentoProps
-  ): Divida[] {
-    
-    const apartamento = this.buscarApartamento(props);
-
-    if (apartamento) return apartamento.dividas.filter(divida => divida.dataPagamento != null);
-
-    throw new Error("Apartamento não encontrado.");
-  };
-
-  buscarApartamento(props: BuscarApartamentoProps): Apartamento{
-
-    const apartamento =  this.apartamentos.find(
-      (ap) => ap.id == props.id_apartamento
-    );
-    
-    if (apartamento) {
-     return apartamento;
-    } 
-    
-    throw new Error("Apartamento não encontrado.");
-  };
-
-  buscarDivida(props: BuscarDividaProps){
-    const apartamento = this.buscarApartamento(props);
-
-    const divida = apartamento.dividas.find((d) => d.id == props.id_divida);
-
-    if(divida == null) throw new Error("Nenhuma dívida encontrada.");
-
-    return divida;
-  };
-
-  adicionarDespesa = (props: CriarDespesaProps): Despesa => {
-    const despesa = this.despesaFactory.adiconarDespesa(props);
-    this.condominio.despesas.push(despesa);
-    return despesa;
-  };
-
-  calcularBalanco = () => {
-    const totalDespesas = this.condominio.despesas.reduce(
-      (total, despesa) => total + despesa.valor, 0
-    );
-    const totalReceitas = this.condominio.receitas.reduce(
-      (total, receita) => total + receita.valor, 0
-    );
-    const balanco = {
-      balanco: totalReceitas - totalDespesas,
-      receitas: this.condominio.receitas,
-      despesas: this.condominio.despesas
-    };
+  // Condomínio funções
+  async calcularBalanco() {
+    const balanco = await this.condominioRepository.calcularBalanco();
     return balanco;
-  };
+  }
+
+  async adicionarReceita(receita: CondominioProps): Promise<Receita> {
+    validacoes.validarReceitaDespesa(receita);
+    const receitaAdicionada = this.condominioRepository.cadastrarReceita(receita);
+    return receitaAdicionada;
+  }
+
+  async adicionarDespesa(despesa: CondominioProps): Promise<Despesa> {
+    validacoes.validarReceitaDespesa(despesa);
+    const despesaAdicionada = await this.condominioRepository.cadastrarDespesa(despesa);
+    return despesaAdicionada;
+  }
+
+  async deletarReceita(id: string): Promise<boolean> {
+    const result = await this.condominioRepository.deletarReceita(id);
+    return result;
+  }
+
+  async deletarDespesa(id: string): Promise<boolean> {
+    const result = await this.condominioRepository.deletarDespesa(id);
+    return result;
+  }
+
 }

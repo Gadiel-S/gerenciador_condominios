@@ -1,47 +1,23 @@
-export interface Condominio {
-  despesas: Despesa[],
-  receitas: Receita[]
+export interface ApartamentoProps {
+  numero: number,
+  morador: string
+};
+
+export interface DividaProps {
+  valor: number;
+  jurosAtrasoDiario: number;
+  dataVencimento: string;
+  descricao?: string;
 }
 
-export interface Receita {
-  nome: string,
-  valor: number,
-  data_emissao: Date
+export interface PagamentoProps {
+  valorPago: number;
+  dataPagamento: string;
+  descricao?: string;
 }
 
-export interface Despesa {
-  nome: string,
-  valor: number,
-  data_emissao: Date
-}
-
-export class Apartamento {
-  id: string;
-  numero: number;
-  morador: string;
-  dividas: Divida[];
-  get pagamentos(){
-    return this.dividas.filter(divida => divida.dataPagamento != null);
-  }
-
-  constructor(numero: number, morador: string, dividas: Divida[],id: string){
-    this.id = id;
-    this.numero = numero;
-    this.morador = morador;
-    this.dividas = dividas;
-  }
-}
-
-export interface Divida {
-  id: string,
-  valor: number,
-  dataVencimento: Date,
-  descricao: string,
-  jurosAtrasoDiario: number,
-  dataPagamento?: Date
-}
-
-export interface Pagamento {
-  valor: number,
-  data: Date
+export interface CondominioProps {
+  nome: string;
+  valor: number;
+  dataEmissao: string;
 }

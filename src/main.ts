@@ -1,21 +1,25 @@
-import express, { Request, Response } from "express";
+/* import express, { Request, Response } from "express";
 import { Gestor } from "./gestor";
 import { DividaFactory } from "./factory/divida_factory";
 import { ApartamentoFactory } from "./factory/apartamento_factory";
 import { DespesaFactory } from "./factory/despesa_factory";
-
 import cors from "cors";
-import { Divida } from "./domain/types";
+
+import ApartamentoRepository from "./repository/apartamento_repository";
+import { AppDataSource } from "./configuration/data_source";
+// import { ApartamentoEntity } from "./entity/apartamento";
 
 const app = express();
 const port = 3000;
 
 app.use(cors()); // Permite todas as origens
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const gestor = new Gestor(
-  new DividaFactory(),
   new ApartamentoFactory(),
+  new ApartamentoRepository(),
+  new DividaFactory(),
   new DespesaFactory()
 );
 
@@ -25,8 +29,10 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // Listar apartamentos
-app.get("/apartamento/listar", (req: Request, res: Response) => {
-  res.json(gestor.apartamentos);
+app.get("/apartamento/listar", async (req: Request, res: Response) => {
+  // const apartamentoRepository = AppDataSource.getRepository(ApartamentoEntity);
+  const apartamentos = await apartamentoRepository.find();
+  res.json(apartamentos);
 });
 
 // Cadastrar Apartamento
@@ -41,13 +47,13 @@ app.post("/apartamento/cadastrar", (req: Request, res: Response) => {
 
 // Listar dívidas de um apartamento
 app.get("/apartamento/:id_apartamento/dividas/listar", (req: Request, res: Response) => {
-  
   try {
     const dividas = gestor.listarDividasApartamento({id_apartamento: req.params.id_apartamento });
     res.json(dividas);
   } catch (error:any) {
     res.status(404).json(error.message);
   }
+  
 });
 
 // Cadastrar dívida
@@ -88,7 +94,7 @@ app.get("/condominio/balanco", (req: Request, res: Response) => {
 
 // Adicionar despesa
 app.post("/condominio/despesas/criar", (req: Request, res: Response) => {
-  const despesa = gestor.adicionarDespesa(req.body);
+  const despesa = gestor.adicionarDespesaCondominio(req.body);
   res.json(despesa);
 })
 
@@ -96,3 +102,4 @@ app.post("/condominio/despesas/criar", (req: Request, res: Response) => {
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
 });
+*/

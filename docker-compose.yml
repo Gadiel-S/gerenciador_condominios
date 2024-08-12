@@ -1,0 +1,41 @@
+version: '3.7'
+
+services:
+  api:
+    build:
+      context: ./api
+    container_name: api-node
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: condominios_gestao
+      DB_USER: webuser
+      DB_PASSWORD: defaultpassword
+    ports:
+      - "4000:4000"
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: "strongpassword"
+      MYSQL_DATABASE: "condominios_gestao"
+      MYSQL_USER: "webuser"
+      MYSQL_PASSWORD: "defaultpassword"
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db_data:

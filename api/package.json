@@ -1,10 +1,10 @@
 {
   "name": "condominio_portifolio",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.ts",
+  "description": "API Sistema Gerenciador de Condomínios, contruído com Node.js",
+  "main": "src/main.ts",
   "scripts": {
-    "start": "nodemon index.ts",
+    "start": "nodemon src/main.ts",
     "build": "tsc"
   },
   "keywords": [],

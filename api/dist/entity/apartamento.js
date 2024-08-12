@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Apartamento = void 0;
 const typeorm_1 = require("typeorm");
 const divida_1 = require("./divida");
+const pagamento_1 = require("./pagamento");
 let Apartamento = class Apartamento {
 };
 exports.Apartamento = Apartamento;
@@ -31,6 +32,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => divida_1.Divida, (divida) => divida.apartamento),
     __metadata("design:type", Array)
 ], Apartamento.prototype, "dividas", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => pagamento_1.Pagamento, (pagamento) => pagamento.apartamento),
+    __metadata("design:type", Array)
+], Apartamento.prototype, "pagamentos", void 0);
 exports.Apartamento = Apartamento = __decorate([
     (0, typeorm_1.Entity)("apartamentos")
 ], Apartamento);

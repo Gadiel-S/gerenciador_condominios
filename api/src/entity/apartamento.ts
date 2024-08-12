@@ -1,5 +1,6 @@
 import { Entity, PrimaryColumn, Column, OneToMany } from "typeorm";
 import { Divida } from "./divida";
+import { Pagamento } from "./pagamento";
 
 @Entity("apartamentos")
 export class Apartamento {
@@ -14,5 +15,8 @@ export class Apartamento {
 
   @OneToMany(() => Divida, (divida) => divida.apartamento)
   dividas!: Divida[];
+
+  @OneToMany(() => Pagamento, (pagamento) => pagamento.apartamento)
+  pagamentos!: Pagamento[];
 
 }

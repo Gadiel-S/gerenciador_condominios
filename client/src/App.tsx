@@ -1,35 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Navigation from './components/navigation';
+import Homepage from './pages/homepage';
+import Apartamentos from './pages/apartamentos';
+import ApartamentoCadastrar from './pages/cadastrarApartamento';
+import './styles/App.css';
+import Dividas from './pages/dividas';
+import DividaCadastrar from './pages/cadastrarDivida';
+import RegistrarPagamentoDivida from './pages/registrarPagamentoDivida';
+import Pagamentos from './pages/pagamentos';
+import Condominio from './pages/condominio';
+import Receitas from './pages/receitas';
+import ReceitaAdicionar from './pages/adicionarReceita';
+import Despesas from './pages/despesas';
+import DespesaAdicionar from './pages/adicionarDespesa';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App: React.FC = () => {
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <Router>
+      <Navigation />
+      <Routes>
+        <Route path="/" element={<Homepage />}></Route>
+        <Route path="/apartamento/listar" element={<Apartamentos />}></Route>
+        <Route path="/apartamento/cadastrar" element={<ApartamentoCadastrar />}></Route>
+        <Route path="/divida/listar" element={<Dividas />}></Route>
+        <Route path="/divida/cadastrar" element={<DividaCadastrar />}></Route>
+        <Route path="/divida/registrarPagamento" element={<RegistrarPagamentoDivida />}></Route>
+        <Route path="/pagamento/listar" element={<Pagamentos />}></Route>
+        <Route path="/condominio/balanco" element={<Condominio />}></Route>
+        <Route path="/receita/listar" element={<Receitas />}></Route>
+        <Route path="/despesa/listar" element={<Despesas />}></Route>
+        <Route path="/receita/adicionar" element={<ReceitaAdicionar />}></Route>
+        <Route path="/despesa/adicionar" element={<DespesaAdicionar />}></Route>
+      </Routes>
+    </Router>
+  );
+};
 
-export default App
+export default App;

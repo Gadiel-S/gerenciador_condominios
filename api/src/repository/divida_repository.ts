@@ -3,7 +3,6 @@ import { Divida } from "../entity/divida";
 import { ApartamentoRepository } from "./apartamento_repository";
 import { DividaProps } from "../domain/types";
 import { v4 as uuidv4 } from "uuid";
-import { parse } from 'date-fns';
 
 const apartamentoRepository = new ApartamentoRepository();
 
@@ -14,7 +13,12 @@ export class DividaRepository {
     const apartamento = await apartamentoRepository.buscarApartamentoPeloId(idApartamento);
     return await this.dividaRepository.find({
       where: {
-        apartamento: apartamento,
+        apartamento: {
+          id: idApartamento,
+        },
+      },
+      order: {
+        dataVencimento: 'ASC',
       }
     });
   }
@@ -35,7 +39,7 @@ export class DividaRepository {
     dividaNova.valor = divida.valor;
     dividaNova.jurosAtrasoDiario = divida.jurosAtrasoDiario;
     dividaNova.descricao = divida.descricao || '';
-    dividaNova.dataVencimento = parse(divida.dataVencimento, "dd/mm/yyyy", new Date());
+    dividaNova.dataVencimento = new Date(divida.dataVencimento);
     dividaNova.apartamento = apartamento;
     return this.dividaRepository.save(dividaNova);
   }
@@ -49,7 +53,7 @@ export class DividaRepository {
       dividaAnt.jurosAtrasoDiario = dividaNova.jurosAtrasoDiario;
     }
     if(dividaNova.dataVencimento) {
-      dividaAnt.dataVencimento = parse(dividaNova.dataVencimento, "dd/mm/yyyy", new Date());
+      dividaAnt.dataVencimento = new Date(dividaNova.dataVencimento);
     }
     if(dividaNova.descricao) {
       dividaAnt.descricao = dividaNova.descricao;

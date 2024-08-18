@@ -7,10 +7,15 @@ export class ApartamentoRepository {
   private apartamentoRepository = AppDataSource.getRepository(Apartamento);
 
   public async buscarApartamentos(): Promise<Apartamento[]> {
-    return this.apartamentoRepository.find();
+    return this.apartamentoRepository.find({
+      order: {
+        numero: 'ASC',
+      },
+    });
   }
 
   public async buscarApartamentoPeloId(id: string): Promise<Apartamento> {
+    // console.log(id);
     const apartamento = await this.apartamentoRepository.findOneBy({ id });
     if(apartamento) {
       return apartamento;

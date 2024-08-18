@@ -109,6 +109,16 @@ export class Gestor {
     return balanco;
   }
 
+  async listarReceitas(): Promise<Receita[]> {
+    const receitas = await this.condominioRepository.buscarReceitas();
+    return receitas;
+  }
+
+  async listarDespesas(): Promise<Despesa[]> {
+    const despesas = await this.condominioRepository.buscarDespesas();
+    return despesas;
+  }
+
   async adicionarReceita(receita: CondominioProps): Promise<Receita> {
     validacoes.validarReceitaDespesa(receita);
     const receitaAdicionada = this.condominioRepository.cadastrarReceita(receita);

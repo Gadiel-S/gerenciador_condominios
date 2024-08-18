@@ -41,9 +41,7 @@ export class CondominioRepository {
     const totalReceitas = receitas.reduce((acc, receita) => acc + Number(receita.valor), 0);
     const totalDespesas = despesas.reduce((acc, despesa) => acc + Number(despesa.valor), 0);
     const balanco = {
-      balanco: totalReceitas - totalDespesas,
-      receitas: receitas,
-      despesas: despesas
+      balanco: totalReceitas - totalDespesas
     }
     return balanco;
   }

@@ -1,0 +1,149 @@
+/* Estilos Gerais */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  padding: 30px;
+}
+
+h1, h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+p {
+  color: #003049;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul li {
+  list-style: none;
+}
+
+button, .menu-btn {
+  cursor: pointer;
+  background-color: #0077b6;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  opacity: .8;
+  transition: .3s;
+}
+
+button:hover, .menu-btn:hover {
+  opacity: 1;
+}
+
+.menu-btns {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.menu-btn {
+  padding: 8px 16px;
+  font-size: 13.5px;
+}
+
+nav {
+  margin: 10px auto 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  max-width: 35em;
+  margin: 0 auto 10em;
+  background-color: #e9e9e9;
+  padding: 30px 30px 40px;
+  border-radius: 10px;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  gap: 30px;
+}
+
+/* Estilos Listar */
+
+#apartamento {
+  max-width: 70em;
+  gap: 20px;
+}
+
+.cadastrar-btn {
+  background-color: #40916c;
+  padding: 10px 15px;
+  font-size: 13px;
+}
+
+.apartamento-bloco {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 10px;
+  justify-content: center;
+}
+
+.apartamento {
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  width: 18em; 
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.apartamento-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.apartamento button {
+  padding: 8px 12px;
+}
+
+.deletar-btn {
+  background-color: #9d0208;
+}
+
+/* Estilos Formulários */
+
+.apartamento-form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.form-field {
+  display: flex;
+  gap: 10px;
+}
+
+.form-btns {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}

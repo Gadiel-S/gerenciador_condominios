@@ -16,7 +16,7 @@ export class Divida {
   @Column({
     type: 'decimal',
     precision: 6,
-    scale: 3,
+    scale: 2,
   })
   jurosAtrasoDiario!: number;
 

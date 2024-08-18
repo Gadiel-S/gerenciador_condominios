@@ -19,7 +19,25 @@ condominioRotas.get('/balanco', async (req: Request, res: Response) => {
     const balanco = await gestor.calcularBalanco();
     res.status(200).send(balanco);
   } catch (error: any) {
-    res.status(409).send({ message: error.message });
+    res.status(409).json({ message: error.message });
+  }
+});
+
+condominioRotas.get('/receita/listar', async (req: Request, res: Response) => {
+  try {
+    const receitas = await gestor.listarReceitas();
+    res.status(200).send(receitas);
+  } catch (error: any) {
+    res.status(409).json({ message: error.message });
+  }
+});
+
+condominioRotas.get('/despesa/listar', async (req: Request, res: Response) => {
+  try {
+    const despesas = await gestor.listarDespesas();
+    res.status(200).send(despesas);
+  } catch (error: any) {
+    res.status(409).json({ message: error.message });
   }
 });
 

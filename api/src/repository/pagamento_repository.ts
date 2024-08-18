@@ -1,14 +1,16 @@
 import { AppDataSource } from "../configuration/data_source";
 import { ApartamentoRepository } from "./apartamento_repository";
 import { DividaRepository } from "./divida_repository";
+import { CondominioRepository } from "./condominio_repository";
 import { Pagamento } from "../entity/pagamento";
-import { PagamentoProps } from "../domain/types";
+import { CondominioProps, PagamentoProps } from "../domain/types";
 import { v4 as uuidv4 } from "uuid";
 import { Receita } from "../entity/receita";
-import { parse } from 'date-fns';
+import { parse } from "date-fns";
 
 const apartamentoRepository = new ApartamentoRepository();
 const dividaRepository = new DividaRepository();
+const condominio_repository = new CondominioRepository();
 
 export class PagamentoRepository {
   private pagamentoRepository = AppDataSource.getRepository(Pagamento);
@@ -17,8 +19,13 @@ export class PagamentoRepository {
     const apartamento = await apartamentoRepository.buscarApartamentoPeloId(idApartamento);
     return await this.pagamentoRepository.find({
       where: {
-        apartamento: apartamento,
-      }
+        apartamento: {
+          id: idApartamento,
+        },
+      },
+      order: {
+        dataPagamento: 'ASC',
+      },
     });
   }
 
@@ -37,17 +44,20 @@ export class PagamentoRepository {
     const pagamentoNovo = new Pagamento();
     pagamentoNovo.id = uuidv4();
     pagamentoNovo.valorPago = pagamento.valorPago;
-    pagamentoNovo.dataPagamento = parse(pagamento.dataPagamento, "dd/mm/yyyy", new Date());
+    // pagamentoNovo.dataPagamento = new Date(pagamento.dataPagamento);
+    pagamentoNovo.dataPagamento = parse(pagamento.dataPagamento, 'dd/MM/yyyy', new Date());
     pagamentoNovo.descricao = pagamento.descricao || '';
     pagamentoNovo.apartamento = apartamento
-    // Adicionar Receita e deletar divida
-    const receita = new Receita();
-    receita.id = uuidv4();
-    receita.nome = `Pagamento do apartamento ${apartamento.numero}`;
-    receita.valor = pagamento.valorPago || 0;
-    receita.dataEmissao = parse(pagamento.dataPagamento, "dd/mm/yyyy", new Date()) || new Date();
+    // Adicionar Receita
+    const receita = {
+      id: uuidv4(),
+      nome: `Pagamento do apartamento ${apartamento.numero}`,
+      valor: pagamento.valorPago || 0,
+      dataEmissao: pagamento.dataPagamento
+    };
     // Deletar dívida
     await dividaRepository.deletarDivida(idDivida);
+    await condominio_repository.cadastrarReceita(receita);
     return this.pagamentoRepository.save(pagamentoNovo);
   }
 
@@ -57,7 +67,7 @@ export class PagamentoRepository {
       pagamentoAnt.valorPago = pagamentoNovo.valorPago;
     }
     if(pagamentoNovo.dataPagamento) {
-      pagamentoAnt.dataPagamento = parse(pagamentoNovo.dataPagamento, "dd/mm/yyyy", new Date);
+      pagamentoAnt.dataPagamento = new Date(pagamentoNovo.dataPagamento);
     }
     if(pagamentoNovo.descricao) {
       pagamentoAnt.descricao = pagamentoNovo.descricao

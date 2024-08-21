@@ -14,20 +14,47 @@ const data_source_1 = require("../configuration/data_source");
 const receita_1 = require("../entity/receita");
 const despesa_1 = require("../entity/despesa");
 const uuid_1 = require("uuid");
-const date_fns_1 = require("date-fns");
 class CondominioRepository {
     constructor() {
         this.receitaRepository = data_source_1.AppDataSource.getRepository(receita_1.Receita);
         this.despesaRepository = data_source_1.AppDataSource.getRepository(despesa_1.Despesa);
     }
-    buscarReceitas() {
+    buscarReceitas(limit) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.receitaRepository.find();
+            if (limit !== undefined) {
+                return this.receitaRepository.find({
+                    take: limit,
+                    order: {
+                        dataEmissao: 'ASC'
+                    }
+                });
+            }
+            else {
+                return this.receitaRepository.find({
+                    order: {
+                        dataEmissao: 'ASC'
+                    }
+                });
+            }
         });
     }
-    buscarDespesas() {
+    buscarDespesas(limit) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.despesaRepository.find();
+            if (limit !== undefined) {
+                return this.despesaRepository.find({
+                    take: limit,
+                    order: {
+                        dataEmissao: 'ASC'
+                    }
+                });
+            }
+            else {
+                return this.despesaRepository.find({
+                    order: {
+                        dataEmissao: 'ASC'
+                    }
+                });
+            }
         });
     }
     buscarReceitaPeloId(id) {
@@ -59,9 +86,7 @@ class CondominioRepository {
             const totalReceitas = receitas.reduce((acc, receita) => acc + Number(receita.valor), 0);
             const totalDespesas = despesas.reduce((acc, despesa) => acc + Number(despesa.valor), 0);
             const balanco = {
-                balanco: totalReceitas - totalDespesas,
-                receitas: receitas,
-                despesas: despesas
+                balanco: totalReceitas - totalDespesas
             };
             return balanco;
         });
@@ -72,7 +97,7 @@ class CondominioRepository {
             receitaNova.id = (0, uuid_1.v4)();
             receitaNova.nome = receita.nome;
             receitaNova.valor = receita.valor;
-            receitaNova.dataEmissao = (0, date_fns_1.parse)(receita.dataEmissao, "dd/mm/yyyy", new Date());
+            receitaNova.dataEmissao = new Date(receita.dataEmissao);
             return this.receitaRepository.save(receitaNova);
         });
     }
@@ -82,7 +107,7 @@ class CondominioRepository {
             despesaNova.id = (0, uuid_1.v4)();
             despesaNova.nome = despesa.nome;
             despesaNova.valor = despesa.valor;
-            despesaNova.dataEmissao = (0, date_fns_1.parse)(despesa.dataEmissao, "dd/mm/yyyy", new Date());
+            despesaNova.dataEmissao = new Date(despesa.dataEmissao);
             return this.despesaRepository.save(despesaNova);
         });
     }

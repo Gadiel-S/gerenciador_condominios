@@ -125,6 +125,6 @@ export class Validacoes {
   private isValidDate(dateString: string) {
     const date = parse(dateString, "dd/mm/yyyy", new Date());
     return isValid(date);
-}
+  }
 
 }

@@ -3,10 +3,8 @@ import { ApartamentoRepository } from "./apartamento_repository";
 import { DividaRepository } from "./divida_repository";
 import { CondominioRepository } from "./condominio_repository";
 import { Pagamento } from "../entity/pagamento";
-import { CondominioProps, PagamentoProps } from "../domain/types";
+import { PagamentoProps } from "../domain/types";
 import { v4 as uuidv4 } from "uuid";
-import { Receita } from "../entity/receita";
-import { parse } from "date-fns";
 
 const apartamentoRepository = new ApartamentoRepository();
 const dividaRepository = new DividaRepository();
@@ -44,8 +42,7 @@ export class PagamentoRepository {
     const pagamentoNovo = new Pagamento();
     pagamentoNovo.id = uuidv4();
     pagamentoNovo.valorPago = pagamento.valorPago;
-    // pagamentoNovo.dataPagamento = new Date(pagamento.dataPagamento);
-    pagamentoNovo.dataPagamento = parse(pagamento.dataPagamento, 'dd/MM/yyyy', new Date());
+    pagamentoNovo.dataPagamento = new Date(pagamento.dataPagamento);
     pagamentoNovo.descricao = pagamento.descricao || '';
     pagamentoNovo.apartamento = apartamento
     // Adicionar Receita

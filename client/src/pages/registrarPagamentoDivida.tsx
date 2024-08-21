@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { formatarValor, formatarData } from "../services/apartamentoServices";
+import { formatarValor } from "../services/apartamentoServices";
 
 const RegistrarPagamentoDivida: React.FC = () => {
   const [valor, setValor] = useState<string>('');
@@ -9,21 +9,18 @@ const RegistrarPagamentoDivida: React.FC = () => {
   const [error, setError] = useState<Error | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const { idApartamento, numeroApartamento, idDivida } = location.state || {};
+  const { idApartamento, numeroApartamento, divida } = location.state || {};
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const valorFormatado = formatarValor(valor);
-    const pagamentoFormatado = formatarData(pagamentoData);
     const pagamento = {
       valorPago: valorFormatado,
-      dataPagamento: pagamentoFormatado,
+      dataPagamento: pagamentoData,
       descricao: descricao
     }
-    console.log(JSON.stringify(pagamento));
-    console.log(idDivida, idApartamento);
     try {
-      const response = await fetch(`http://localhost:4000/pagamento/registrarPagamentoDivida/${idDivida}/apartamento/${idApartamento}`, {
+      const response = await fetch(`http://localhost:4000/pagamento/registrarPagamentoDivida/${divida.id}/apartamento/${idApartamento}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -51,6 +48,16 @@ const RegistrarPagamentoDivida: React.FC = () => {
   return (
     <div id='cadastrarApartamento' className="container">
       <h1>Registrar Pagamento da Dívida</h1>
+
+      <div className="apartamento-bloco">
+          <div key={divida.id} className="apartamento">
+            <p>Valor: {divida.valor}</p>
+
+            <p>Juros de Atraso Diário: {divida.jurosAtrasoDiario}</p>
+
+            <p>Data de Vencimento: {divida.dataVencimento}</p>
+          </div>
+      </div>
 
       <form onSubmit={handleSubmit} className="apartamento-form">
         <div className="form-fields">

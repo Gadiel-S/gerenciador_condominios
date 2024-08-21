@@ -8,9 +8,7 @@ import { Pagamento } from "./entity/pagamento";
 import { Receita } from "./entity/receita";
 import { Despesa } from "./entity/despesa";
 import { ApartamentoProps, DividaProps, PagamentoProps, CondominioProps } from "./domain/types";
-import { Validacoes } from "./validation_functions";
-
-const validacoes = new Validacoes();
+import Schemas from "./validations";
 
 export class Gestor {
   private apartamentoRepository: ApartamentoRepository;
@@ -41,13 +39,13 @@ export class Gestor {
   }
 
   async cadastrarApartamento(apartamento: ApartamentoProps): Promise<Apartamento> {
-    validacoes.validarApartamento(apartamento);
+    Schemas.apartamentoSchema.parse(apartamento);
     const apt = await this.apartamentoRepository.cadastrarApartamento(apartamento);
     return apt;
   }
 
   async atualizarApartamento(id: string, apartamento: ApartamentoProps): Promise<Apartamento> {
-    validacoes.validarApartamento(apartamento, id);
+    Schemas.apartamentoAttSchema.parse(apartamento);
     const apt = await this.apartamentoRepository.atualizarApartamento(id, apartamento);
     return apt;
   }
@@ -64,13 +62,13 @@ export class Gestor {
   }
 
   async cadastrarDivida(idApartamento: string, divida: DividaProps): Promise<Divida> {
-    validacoes.validarDivida(divida);
+    Schemas.dividaSchema.parse(divida);
     const dividaCadastrada = await this.dividaRepository.cadastrarDivida(idApartamento, divida);
     return dividaCadastrada;
   }
 
   async atualizarDivida(idDivida: string, divida: DividaProps): Promise<Divida> {
-    validacoes.validarDivida(divida, idDivida);
+    Schemas.dividaAttSchema.parse(divida);
     const dividaAtualizada = await this.dividaRepository.atualizarDivida(idDivida, divida);
     return dividaAtualizada;
   }
@@ -87,13 +85,13 @@ export class Gestor {
   }
 
   async registrarPagamentoDivida(idApartamento: string, idDivida: string, pagamento: PagamentoProps): Promise<Pagamento> {
-    validacoes.validarPagamento(pagamento);
+    Schemas.pagamentoSchema.parse(pagamento);
     const pagamentoCadastrado = await this.pagamentoRepository.cadastrarPagamento(idApartamento, idDivida, pagamento);
     return pagamentoCadastrado;
   }
 
   async atualizarPagamento(idPagamento: string, pagamento: PagamentoProps): Promise<Pagamento> {
-    validacoes.validarPagamento(pagamento, idPagamento);
+    Schemas.pagamentoAttSchema.parse(pagamento);
     const pagamentoCadastrado = await this.pagamentoRepository.atualizarPagamento(idPagamento, pagamento);
     return pagamentoCadastrado;
   }
@@ -114,19 +112,29 @@ export class Gestor {
     return receitas;
   }
 
+  async listarPrimeirasReceitas(limit: number): Promise<Receita[]> {
+    const receitas = await this.condominioRepository.buscarReceitas(limit);
+    return receitas;
+  }
+
   async listarDespesas(): Promise<Despesa[]> {
     const despesas = await this.condominioRepository.buscarDespesas();
     return despesas;
   }
 
+  async listarPrimeirasDespesas(limit: number): Promise<Despesa[]> {
+    const despesas = await this.condominioRepository.buscarDespesas(limit);
+    return despesas;
+  }
+
   async adicionarReceita(receita: CondominioProps): Promise<Receita> {
-    validacoes.validarReceitaDespesa(receita);
+    Schemas.receitaDespesaSchema.parse(receita);
     const receitaAdicionada = this.condominioRepository.cadastrarReceita(receita);
     return receitaAdicionada;
   }
 
   async adicionarDespesa(despesa: CondominioProps): Promise<Despesa> {
-    validacoes.validarReceitaDespesa(despesa);
+    Schemas.receitaDespesaSchema.parse(despesa);
     const despesaAdicionada = await this.condominioRepository.cadastrarDespesa(despesa);
     return despesaAdicionada;
   }

@@ -30,8 +30,8 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({
         type: 'decimal',
-        precision: 6,
-        scale: 3,
+        precision: 3,
+        scale: 2,
     }),
     __metadata("design:type", Number)
 ], Divida.prototype, "jurosAtrasoDiario", void 0);

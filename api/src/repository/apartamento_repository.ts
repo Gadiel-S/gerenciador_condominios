@@ -15,7 +15,6 @@ export class ApartamentoRepository {
   }
 
   public async buscarApartamentoPeloId(id: string): Promise<Apartamento> {
-    // console.log(id);
     const apartamento = await this.apartamentoRepository.findOneBy({ id });
     if(apartamento) {
       return apartamento;

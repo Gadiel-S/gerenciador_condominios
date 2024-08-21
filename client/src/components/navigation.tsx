@@ -11,9 +11,6 @@ const Navigation: React.FC = () => {
         <Link to="/apartamento/listar">
           <li className="menu-btn">Apartamentos</li>
         </Link>
-        <Link to="/condominio/balanco">
-          <li className="menu-btn">Condomínio</li>
-        </Link>
       </ul>
     </nav>
   );

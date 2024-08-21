@@ -3,18 +3,43 @@ import { Receita } from "../entity/receita";
 import { Despesa } from "../entity/despesa";
 import { CondominioProps } from "../domain/types";
 import { v4 as uuidv4 } from "uuid";
-import { parse } from 'date-fns';
 
 export class CondominioRepository {
   private receitaRepository = AppDataSource.getRepository(Receita);
   private despesaRepository = AppDataSource.getRepository(Despesa);
 
-  public async buscarReceitas(): Promise<Receita[]> {
-    return this.receitaRepository.find();
+  public async buscarReceitas(limit?: number): Promise<Receita[]> {
+    if(limit !== undefined) {
+      return this.receitaRepository.find({
+        take: limit,
+        order: {
+          dataEmissao: 'ASC'
+        }
+      });
+    } else {
+      return this.receitaRepository.find({
+        order: {
+          dataEmissao: 'ASC'
+        }
+      });
+    }
   }
 
-  public async buscarDespesas(): Promise<Despesa[]> {
-    return this.despesaRepository.find();
+  public async buscarDespesas(limit?: number): Promise<Despesa[]> {
+    if(limit !== undefined) {
+      return this.despesaRepository.find({
+        take: limit,
+        order: {
+          dataEmissao: 'ASC'
+        }
+      });
+    } else {
+      return this.despesaRepository.find({
+        order: {
+          dataEmissao: 'ASC'
+        }
+      });
+    }
   }
 
   public async buscarReceitaPeloId(id: string): Promise<Receita> {
@@ -51,7 +76,7 @@ export class CondominioRepository {
     receitaNova.id = uuidv4();
     receitaNova.nome = receita.nome;
     receitaNova.valor = receita.valor;
-    receitaNova.dataEmissao = parse(receita.dataEmissao, "dd/mm/yyyy", new Date());
+    receitaNova.dataEmissao = new Date(receita.dataEmissao);
     return this.receitaRepository.save(receitaNova);
   }
 
@@ -60,7 +85,7 @@ export class CondominioRepository {
     despesaNova.id = uuidv4();
     despesaNova.nome = despesa.nome;
     despesaNova.valor = despesa.valor;
-    despesaNova.dataEmissao = parse(despesa.dataEmissao, "dd/mm/yyyy", new Date());
+    despesaNova.dataEmissao = new Date(despesa.dataEmissao);
     return this.despesaRepository.save(despesaNova);
   }
 

@@ -19,7 +19,11 @@ class ApartamentoRepository {
     }
     buscarApartamentos() {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.apartamentoRepository.find();
+            return this.apartamentoRepository.find({
+                order: {
+                    numero: 'ASC',
+                },
+            });
         });
     }
     buscarApartamentoPeloId(id) {

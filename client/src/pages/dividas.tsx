@@ -44,16 +44,16 @@ const Dividas: React.FC = () => {
     } });
   }
 
-  const PassarIdApartamentoPagamento = (idDivida: string) => {
+  const PassarIdApartamentoPagamento = (divida: DividaProps) => {
     navigate('/divida/RegistrarPagamento', { state: { 
       idApartamento: idApartamento,
       numeroApartamento: numeroApartamento,
-      idDivida: idDivida
+      divida: divida
      } });
   }
 
   return (
-    <div id="apartamento" className="container">
+    <div className="container">
       <h1>Dívidas do Apartamento {numeroApartamento}</h1>
 
       <Link to="/apartamento/listar">
@@ -84,7 +84,7 @@ const Dividas: React.FC = () => {
             <div className="apartamento-btns">
               <button
                 className="cadastrar-btn"
-                onClick={() => PassarIdApartamentoPagamento(divida.id)}>
+                onClick={() => PassarIdApartamentoPagamento(divida)}>
                   Pagar Dívida
               </button>
 

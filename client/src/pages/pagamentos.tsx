@@ -38,7 +38,7 @@ const Pagamentos: React.FC = () => {
   }
 
   return (
-    <div id="apartamento" className="container">
+    <div className="container">
       <h1>Pagamentos do Apartamento {numeroApartamento}</h1>
 
       <Link to="/apartamento/listar">

@@ -1,0 +1,62 @@
+import React, { useEffect, useState } from "react";
+import { Line } from "react-chartjs-2";
+import { Chart, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { CondominioProps } from "../domain/types";
+
+Chart.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+
+const GraficoBalanco: React.FC = () => {
+  const [receitas, setReceitas] = useState<CondominioProps[]>([]);
+  const [despesas, setDespesas] = useState<CondominioProps[]>([]);
+
+  useEffect(() => {
+    const listarReceitasDespesas = async () => {
+      try {
+        const receitasResponse = await fetch('http://localhost:4000/condominio/receita/listar');
+        const despesasResponse = await fetch('http://localhost:4000/condominio/despesa/listar');
+        if(!receitasResponse.ok) {
+          throw new Error("Erro ao buscar receitas");
+        }
+        if(!despesasResponse.ok) {
+          throw new Error("Erro ao buscar despesas");
+        }
+        const receitas = await receitasResponse.json() as CondominioProps[];
+        setReceitas(receitas);
+        const despesas = await despesasResponse.json() as CondominioProps[];
+        setDespesas(despesas);
+      } catch (error) {
+        console.error('Erro ao buscar receitas e despesas:', error);
+      }
+    };
+
+    listarReceitasDespesas();
+  }, []);
+
+  const grafico = {
+    labels: receitas.map((receita) => receita.dataEmissao),
+    datasets: [
+      {
+        label: 'Receitas',
+        data: receitas.map((receitas) => receitas.valor),
+        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        fill: true,
+      },
+      {
+        label: 'Despesas',
+        data: despesas.map((despesa) => despesa.valor),
+        borderColor: 'rgba(255, 99, 132, 1)',
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        fill: true,
+      },
+    ],
+  }
+
+  return (
+    <div>
+      <Line data={grafico} />
+    </div>
+  );
+};
+
+export default GraficoBalanco;

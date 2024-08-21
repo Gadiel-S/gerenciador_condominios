@@ -35,7 +35,7 @@ const Despesas: React.FC = () => {
   }
 
   return (
-    <div id='apartamento' className="container">
+    <div className="container">
       <h1>Lista de Despesas</h1>
 
       <Link
@@ -63,7 +63,7 @@ const Despesas: React.FC = () => {
               <button
                 className="deletar-btn"
                 onClick={() => handleDeletarDespesa(despesa.id)}>
-                  Deletar Receita
+                  Deletar Despesa
               </button>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { formatarValor, formatarData } from "../services/apartamentoServices";
+import { formatarValor } from "../services/apartamentoServices";
 
 const ReceitaAdicionar: React.FC = () => {
   const [nome, setNome] = useState<string>('');
@@ -12,11 +12,10 @@ const ReceitaAdicionar: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const valorFormatado = formatarValor(valor);
-    const dataFormatada = formatarData(emissao);
     const receita = {
       nome: nome,
       valor: valorFormatado,
-      dataEmissao: dataFormatada
+      dataEmissao: emissao
     }
     try {
       const response = await fetch('http://localhost:4000/condominio/receita/adicionar', {

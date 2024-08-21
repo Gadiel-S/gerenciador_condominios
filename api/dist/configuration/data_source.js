@@ -9,11 +9,11 @@ const receita_1 = require("../entity/receita");
 const despesa_1 = require("../entity/despesa");
 exports.AppDataSource = new typeorm_1.DataSource({
     type: "mysql",
-    host: "localhost",
-    port: 3306,
-    username: "webuser",
-    password: "defaultpassword",
-    database: "condominios_gestao",
+    host: process.env.DB_HOST || "localhost",
+    port: Number(process.env.DB_PORT) || 3306,
+    username: process.env.DB_USERNAME || "webuser",
+    password: process.env.DB_PASSWORD || "defaultpassword",
+    database: process.env.DB_NAME || "condominios_gestao",
     synchronize: true,
     logging: false,
     entities: [apartamento_1.Apartamento, divida_1.Divida, pagamento_1.Pagamento, receita_1.Receita, despesa_1.Despesa],

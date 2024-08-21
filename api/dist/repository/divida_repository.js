@@ -14,7 +14,6 @@ const data_source_1 = require("../configuration/data_source");
 const divida_1 = require("../entity/divida");
 const apartamento_repository_1 = require("./apartamento_repository");
 const uuid_1 = require("uuid");
-const date_fns_1 = require("date-fns");
 const apartamentoRepository = new apartamento_repository_1.ApartamentoRepository();
 class DividaRepository {
     constructor() {
@@ -25,7 +24,12 @@ class DividaRepository {
             const apartamento = yield apartamentoRepository.buscarApartamentoPeloId(idApartamento);
             return yield this.dividaRepository.find({
                 where: {
-                    apartamento: apartamento,
+                    apartamento: {
+                        id: idApartamento,
+                    },
+                },
+                order: {
+                    dataVencimento: 'ASC',
                 }
             });
         });
@@ -49,7 +53,7 @@ class DividaRepository {
             dividaNova.valor = divida.valor;
             dividaNova.jurosAtrasoDiario = divida.jurosAtrasoDiario;
             dividaNova.descricao = divida.descricao || '';
-            dividaNova.dataVencimento = (0, date_fns_1.parse)(divida.dataVencimento, "dd/mm/yyyy", new Date());
+            dividaNova.dataVencimento = new Date(divida.dataVencimento);
             dividaNova.apartamento = apartamento;
             return this.dividaRepository.save(dividaNova);
         });
@@ -64,7 +68,7 @@ class DividaRepository {
                 dividaAnt.jurosAtrasoDiario = dividaNova.jurosAtrasoDiario;
             }
             if (dividaNova.dataVencimento) {
-                dividaAnt.dataVencimento = (0, date_fns_1.parse)(dividaNova.dataVencimento, "dd/mm/yyyy", new Date());
+                dividaAnt.dataVencimento = new Date(dividaNova.dataVencimento);
             }
             if (dividaNova.descricao) {
                 dividaAnt.descricao = dividaNova.descricao;

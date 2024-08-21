@@ -50,7 +50,7 @@ const Apartamentos: React.FC = () => {
   }
 
   return (
-      <div id='apartamento' className='container'>
+      <div className='container'>
         <h1>Lista de apartamentos</h1>
 
         <Link

@@ -66,11 +66,6 @@ export const transformarNumero = (numero: string) => {
   return numeroValor;
 }
 
-export const formatarData = (data: string) => {
-  const [ano, mes, dia] = data.split('-');
-  return `${dia}/${mes}/${ano}`;
-}
-
 export const formatarValor = (valor: string) => {
   const valorNumerico = parseFloat(valor);
   if(isNaN(valorNumerico)) {

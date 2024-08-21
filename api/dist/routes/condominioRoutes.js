@@ -9,57 +9,160 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const gestor_1 = require("../gestor");
-const apartamento_repository_1 = require("../repository/apartamento_repository");
-const divida_repository_1 = require("../repository/divida_repository");
-const pagamento_repository_1 = require("../repository/pagamento_repository");
-const condominio_repository_1 = require("../repository/condominio_repository");
-const condominioRotas = (0, express_1.Router)();
-const gestor = new gestor_1.Gestor(new apartamento_repository_1.ApartamentoRepository(), new divida_repository_1.DividaRepository(), new pagamento_repository_1.PagamentoRepository(), new condominio_repository_1.CondominioRepository());
-condominioRotas.get('/balanco', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const balanco = yield gestor.calcularBalanco();
-        res.status(200).send(balanco);
+class CondominioRotas {
+    constructor(gestor, rotas) {
+        this.gestor = gestor;
+        this.rotas = rotas;
     }
-    catch (error) {
-        res.status(409).send({ message: error.message });
+    criarRotas() {
+        this.rotas.get('/balanco', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const balanco = yield this.gestor.calcularBalanco();
+                res.status(200).send(balanco);
+            }
+            catch (error) {
+                res.status(409).json({ message: error.message });
+            }
+        }));
+        this.rotas.get('/receita/listar', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const receitas = yield this.gestor.listarReceitas();
+                res.status(200).send(receitas);
+            }
+            catch (error) {
+                res.status(409).json({ message: error.message });
+            }
+        }));
+        this.rotas.get('/receita/listar/limitar/:limite', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const limite = parseInt(req.params.limite, 10) || 5;
+                const receitas = yield this.gestor.listarPrimeirasReceitas(limite);
+                res.status(200).send(receitas);
+            }
+            catch (error) {
+                res.status(409).json({ message: error.message });
+            }
+        }));
+        this.rotas.get('/despesa/listar', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const despesas = yield this.gestor.listarDespesas();
+                res.status(200).send(despesas);
+            }
+            catch (error) {
+                res.status(409).json({ message: error.message });
+            }
+        }));
+        this.rotas.get('/despesa/listar/limitar/:limite', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const limite = parseInt(req.params.limite, 10) || 5;
+                const receitas = yield this.gestor.listarPrimeirasDespesas(limite);
+                res.status(200).send(receitas);
+            }
+            catch (error) {
+                res.status(409).json({ message: error.message });
+            }
+        }));
+        this.rotas.post('/receita/adicionar', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const receita = yield this.gestor.adicionarReceita(req.body);
+                res.status(201).send(receita);
+            }
+            catch (error) {
+                res.status(409).send({ message: error.message });
+            }
+        }));
+        this.rotas.post('/despesa/adicionar', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const despesa = yield this.gestor.adicionarDespesa(req.body);
+                res.status(201).send(despesa);
+            }
+            catch (error) {
+                res.status(409).send({ message: error.message });
+            }
+        }));
+        this.rotas.delete('/receita/deletar/:idReceita', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield this.gestor.deletarReceita(req.params.idReceita);
+                res.status(201).send("Receita deletada com sucesso!");
+            }
+            catch (error) {
+                res.status(409).send({ message: error.message });
+            }
+        }));
+        this.rotas.delete('/despesa/deletar/:idDespesa', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield this.gestor.deletarDespesa(req.params.idDespesa);
+                res.status(201).send("Despesa deletada com sucesso!");
+            }
+            catch (error) {
+                res.status(409).send({ message: error.message });
+            }
+        }));
+        return this.rotas;
     }
-}));
-condominioRotas.post('/receita/adicionar', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const receita = yield gestor.adicionarReceita(req.body);
-        res.status(201).send(receita);
-    }
-    catch (error) {
-        res.status(409).send({ message: error.message });
-    }
-}));
-condominioRotas.post('/despesa/adicionar', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const despesa = yield gestor.adicionarDespesa(req.body);
-        res.status(201).send(despesa);
-    }
-    catch (error) {
-        res.status(409).send({ message: error.message });
-    }
-}));
-condominioRotas.delete('/receita/deletar/:idReceita', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        yield gestor.deletarReceita(req.params.idReceita);
-        res.status(201).send("Receita deletada com sucesso!");
-    }
-    catch (error) {
-        res.status(409).send({ message: error.message });
-    }
-}));
-condominioRotas.delete('/despesa/deletar/:idDespesa', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        yield gestor.deletarDespesa(req.params.idDespesa);
-        res.status(201).send("Despesa deletada com sucesso!");
-    }
-    catch (error) {
-        res.status(409).send({ message: error.message });
-    }
-}));
-exports.default = condominioRotas;
+}
+exports.default = CondominioRotas;
+// const condominioRotas = Router();
+// const gestor = new Gestor(
+//   new ApartamentoRepository(),
+//   new DividaRepository(),
+//   new PagamentoRepository(),
+//   new CondominioRepository()
+// );
+// condominioRotas.get('/balanco', async (req: Request, res: Response) => {
+//   try {
+//     const balanco = await gestor.calcularBalanco();
+//     res.status(200).send(balanco);
+//   } catch (error: any) {
+//     res.status(409).json({ message: error.message });
+//   }
+// });
+// condominioRotas.get('/receita/listar', async (req: Request, res: Response) => {
+//   try {
+//     const receitas = await gestor.listarReceitas();
+//     res.status(200).send(receitas);
+//   } catch (error: any) {
+//     res.status(409).json({ message: error.message });
+//   }
+// });
+// condominioRotas.get('/despesa/listar', async (req: Request, res: Response) => {
+//   try {
+//     const despesas = await gestor.listarDespesas();
+//     res.status(200).send(despesas);
+//   } catch (error: any) {
+//     res.status(409).json({ message: error.message });
+//   }
+// });
+// condominioRotas.post('/receita/adicionar', async (req: Request, res: Response) => {
+//   try {
+//     const receita = await gestor.adicionarReceita(req.body);
+//     res.status(201).send(receita);
+//   } catch (error: any) {
+//     res.status(409).send({ message: error.message });
+//   }
+// });
+// condominioRotas.post('/despesa/adicionar', async (req: Request, res: Response) => {
+//   try {
+//     const despesa = await gestor.adicionarDespesa(req.body);
+//     res.status(201).send(despesa);
+//   } catch (error: any) {
+//     res.status(409).send({ message: error.message });
+//   }
+// });
+// condominioRotas.delete('/receita/deletar/:idReceita', async (req: Request, res: Response) => {
+//   try {
+//     await gestor.deletarReceita(req.params.idReceita);
+//     res.status(201).send("Receita deletada com sucesso!");
+//   } catch (error: any) {
+//     res.status(409).send({ message: error.message });
+//   }
+// });
+// condominioRotas.delete('/despesa/deletar/:idDespesa', async (req: Request, res: Response) => {
+//   try {
+//     await gestor.deletarDespesa(req.params.idDespesa);
+//     res.status(201).send("Despesa deletada com sucesso!");
+//   } catch (error: any) {
+//     res.status(409).send({ message: error.message });
+//   }
+// });
+// export default condominioRotas;

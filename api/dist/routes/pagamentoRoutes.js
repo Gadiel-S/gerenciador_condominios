@@ -9,48 +9,89 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const gestor_1 = require("../gestor");
-const apartamento_repository_1 = require("../repository/apartamento_repository");
-const divida_repository_1 = require("../repository/divida_repository");
-const pagamento_repository_1 = require("../repository/pagamento_repository");
-const condominio_repository_1 = require("../repository/condominio_repository");
-const pagamentoRotas = (0, express_1.Router)();
-const gestor = new gestor_1.Gestor(new apartamento_repository_1.ApartamentoRepository(), new divida_repository_1.DividaRepository(), new pagamento_repository_1.PagamentoRepository(), new condominio_repository_1.CondominioRepository());
-pagamentoRotas.get('/listar/:idApartamento', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const pagamentos = yield gestor.listarPagamentos(req.params.idApartamento);
-        res.status(200).send(pagamentos);
+class PagamentoRotas {
+    constructor(gestor, rotas) {
+        this.gestor = gestor;
+        this.rotas = rotas;
     }
-    catch (error) {
-        res.status(409).send({ message: error.message });
+    criarRotas() {
+        this.rotas.get('/listar/:idApartamento', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const pagamentos = yield this.gestor.listarPagamentos(req.params.idApartamento);
+                res.status(200).send(pagamentos);
+            }
+            catch (error) {
+                res.status(409).send({ message: error.message });
+            }
+        }));
+        this.rotas.post('/registrarPagamentoDivida/:idDivida/apartamento/:idApartamento', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const pagamento = yield this.gestor.registrarPagamentoDivida(req.params.idApartamento, req.params.idDivida, req.body);
+                res.status(201).send(pagamento);
+            }
+            catch (error) {
+                res.status(409).send({ message: error.message });
+            }
+        }));
+        this.rotas.put('/atualizar/:idPagamento', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const pagamento = yield this.gestor.atualizarPagamento(req.params.idPagamento, req.body);
+                res.status(201).send(pagamento);
+            }
+            catch (error) {
+                res.status(409).send({ message: error.message });
+            }
+        }));
+        this.rotas.delete('/deletar/:idPagamento', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield this.gestor.deletarPagamento(req.params.idPagamento);
+                res.status(201).send("Pagamento deletado com sucesso!");
+            }
+            catch (error) {
+                res.status(409).send({ message: error.message });
+            }
+        }));
+        return this.rotas;
     }
-}));
-pagamentoRotas.post('/registrarPagamentoDivida/:idDivida/apartamento/:idApartamento', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const pagamento = yield gestor.registrarPagamentoDivida(req.params.idApartamento, req.params.idDivida, req.body);
-        res.status(201).send(pagamento);
-    }
-    catch (error) {
-        res.status(409).send({ message: error.message });
-    }
-}));
-pagamentoRotas.put('/atualizar/:idPagamento', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const pagamento = yield gestor.atualizarPagamento(req.params.idPagamento, req.body);
-        res.status(201).send(pagamento);
-    }
-    catch (error) {
-        res.status(409).send({ message: error.message });
-    }
-}));
-pagamentoRotas.delete('/deletar/:idPagamento', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        yield gestor.deletarPagamento(req.params.idPagamento);
-        res.status(201).send("Pagamento deletado com sucesso!");
-    }
-    catch (error) {
-        res.status(409).send({ message: error.message });
-    }
-}));
-exports.default = pagamentoRotas;
+}
+exports.default = PagamentoRotas;
+// const pagamentoRotas = Router();
+// const gestor = new Gestor(
+//   new ApartamentoRepository(),
+//   new DividaRepository(),
+//   new PagamentoRepository(),
+//   new CondominioRepository()
+// );
+// pagamentoRotas.get('/listar/:idApartamento', async (req: Request, res: Response) => {
+//   try {
+//     const pagamentos = await gestor.listarPagamentos(req.params.idApartamento);
+//     res.status(200).send(pagamentos);
+//   } catch (error: any) {
+//     res.status(409).send({ message: error.message });
+//   }
+// });
+// pagamentoRotas.post('/registrarPagamentoDivida/:idDivida/apartamento/:idApartamento', async (req: Request, res: Response) => {
+//   try {
+//     const pagamento = await gestor.registrarPagamentoDivida(req.params.idApartamento, req.params.idDivida, req.body);
+//     res.status(201).send(pagamento);
+//   } catch (error: any) {
+//     res.status(409).send({ message: error.message });
+//   }
+// });
+// pagamentoRotas.put('/atualizar/:idPagamento', async (req: Request, res: Response) => {
+//   try {
+//     const pagamento = await gestor.atualizarPagamento(req.params.idPagamento, req.body);
+//     res.status(201).send(pagamento);
+//   } catch (error: any) {
+//     res.status(409).send({ message: error.message });
+//   }
+// });
+// pagamentoRotas.delete('/deletar/:idPagamento', async (req: Request, res: Response) => {
+//   try {
+//     await gestor.deletarPagamento(req.params.idPagamento);
+//     res.status(201).send("Pagamento deletado com sucesso!");
+//   } catch (error: any) {
+//     res.status(409).send({ message: error.message });
+//   }
+// });
+// export default pagamentoRotas;

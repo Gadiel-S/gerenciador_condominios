@@ -13,12 +13,12 @@ exports.PagamentoRepository = void 0;
 const data_source_1 = require("../configuration/data_source");
 const apartamento_repository_1 = require("./apartamento_repository");
 const divida_repository_1 = require("./divida_repository");
+const condominio_repository_1 = require("./condominio_repository");
 const pagamento_1 = require("../entity/pagamento");
 const uuid_1 = require("uuid");
-const receita_1 = require("../entity/receita");
-const date_fns_1 = require("date-fns");
 const apartamentoRepository = new apartamento_repository_1.ApartamentoRepository();
 const dividaRepository = new divida_repository_1.DividaRepository();
+const condominio_repository = new condominio_repository_1.CondominioRepository();
 class PagamentoRepository {
     constructor() {
         this.pagamentoRepository = data_source_1.AppDataSource.getRepository(pagamento_1.Pagamento);
@@ -28,8 +28,13 @@ class PagamentoRepository {
             const apartamento = yield apartamentoRepository.buscarApartamentoPeloId(idApartamento);
             return yield this.pagamentoRepository.find({
                 where: {
-                    apartamento: apartamento,
-                }
+                    apartamento: {
+                        id: idApartamento,
+                    },
+                },
+                order: {
+                    dataPagamento: 'ASC',
+                },
             });
         });
     }
@@ -51,17 +56,19 @@ class PagamentoRepository {
             const pagamentoNovo = new pagamento_1.Pagamento();
             pagamentoNovo.id = (0, uuid_1.v4)();
             pagamentoNovo.valorPago = pagamento.valorPago;
-            pagamentoNovo.dataPagamento = (0, date_fns_1.parse)(pagamento.dataPagamento, "dd/mm/yyyy", new Date());
+            pagamentoNovo.dataPagamento = new Date(pagamento.dataPagamento);
             pagamentoNovo.descricao = pagamento.descricao || '';
             pagamentoNovo.apartamento = apartamento;
-            // Adicionar Receita e deletar divida
-            const receita = new receita_1.Receita();
-            receita.id = (0, uuid_1.v4)();
-            receita.nome = `Pagamento do apartamento ${apartamento.numero}`;
-            receita.valor = pagamento.valorPago || 0;
-            receita.dataEmissao = (0, date_fns_1.parse)(pagamento.dataPagamento, "dd/mm/yyyy", new Date()) || new Date();
+            // Adicionar Receita
+            const receita = {
+                id: (0, uuid_1.v4)(),
+                nome: `Pagamento do apartamento ${apartamento.numero}`,
+                valor: pagamento.valorPago || 0,
+                dataEmissao: pagamento.dataPagamento
+            };
             // Deletar dívida
             yield dividaRepository.deletarDivida(idDivida);
+            yield condominio_repository.cadastrarReceita(receita);
             return this.pagamentoRepository.save(pagamentoNovo);
         });
     }
@@ -72,7 +79,7 @@ class PagamentoRepository {
                 pagamentoAnt.valorPago = pagamentoNovo.valorPago;
             }
             if (pagamentoNovo.dataPagamento) {
-                pagamentoAnt.dataPagamento = (0, date_fns_1.parse)(pagamentoNovo.dataPagamento, "dd/mm/yyyy", new Date);
+                pagamentoAnt.dataPagamento = new Date(pagamentoNovo.dataPagamento);
             }
             if (pagamentoNovo.descricao) {
                 pagamentoAnt.descricao = pagamentoNovo.descricao;

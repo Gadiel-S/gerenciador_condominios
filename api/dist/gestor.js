@@ -8,10 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Gestor = void 0;
-const validation_functions_1 = require("./validation_functions");
-const validacoes = new validation_functions_1.Validacoes();
+const validations_1 = __importDefault(require("./validations"));
 class Gestor {
     constructor(apartamentoRepository, dividaRepository, pagamentoRepository, condominioRepository) {
         this.apartamentoRepository = apartamentoRepository;
@@ -34,14 +36,14 @@ class Gestor {
     }
     cadastrarApartamento(apartamento) {
         return __awaiter(this, void 0, void 0, function* () {
-            validacoes.validarApartamento(apartamento);
+            validations_1.default.apartamentoSchema.parse(apartamento);
             const apt = yield this.apartamentoRepository.cadastrarApartamento(apartamento);
             return apt;
         });
     }
     atualizarApartamento(id, apartamento) {
         return __awaiter(this, void 0, void 0, function* () {
-            validacoes.validarApartamento(apartamento, id);
+            validations_1.default.apartamentoAttSchema.parse(apartamento);
             const apt = yield this.apartamentoRepository.atualizarApartamento(id, apartamento);
             return apt;
         });
@@ -61,14 +63,14 @@ class Gestor {
     }
     cadastrarDivida(idApartamento, divida) {
         return __awaiter(this, void 0, void 0, function* () {
-            validacoes.validarDivida(divida);
+            validations_1.default.dividaSchema.parse(divida);
             const dividaCadastrada = yield this.dividaRepository.cadastrarDivida(idApartamento, divida);
             return dividaCadastrada;
         });
     }
     atualizarDivida(idDivida, divida) {
         return __awaiter(this, void 0, void 0, function* () {
-            validacoes.validarDivida(divida, idDivida);
+            validations_1.default.dividaAttSchema.parse(divida);
             const dividaAtualizada = yield this.dividaRepository.atualizarDivida(idDivida, divida);
             return dividaAtualizada;
         });
@@ -88,14 +90,14 @@ class Gestor {
     }
     registrarPagamentoDivida(idApartamento, idDivida, pagamento) {
         return __awaiter(this, void 0, void 0, function* () {
-            validacoes.validarPagamento(pagamento);
+            validations_1.default.pagamentoSchema.parse(pagamento);
             const pagamentoCadastrado = yield this.pagamentoRepository.cadastrarPagamento(idApartamento, idDivida, pagamento);
             return pagamentoCadastrado;
         });
     }
     atualizarPagamento(idPagamento, pagamento) {
         return __awaiter(this, void 0, void 0, function* () {
-            validacoes.validarPagamento(pagamento, idPagamento);
+            validations_1.default.pagamentoAttSchema.parse(pagamento);
             const pagamentoCadastrado = yield this.pagamentoRepository.atualizarPagamento(idPagamento, pagamento);
             return pagamentoCadastrado;
         });
@@ -113,16 +115,40 @@ class Gestor {
             return balanco;
         });
     }
+    listarReceitas() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const receitas = yield this.condominioRepository.buscarReceitas();
+            return receitas;
+        });
+    }
+    listarPrimeirasReceitas(limit) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const receitas = yield this.condominioRepository.buscarReceitas(limit);
+            return receitas;
+        });
+    }
+    listarDespesas() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const despesas = yield this.condominioRepository.buscarDespesas();
+            return despesas;
+        });
+    }
+    listarPrimeirasDespesas(limit) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const despesas = yield this.condominioRepository.buscarDespesas(limit);
+            return despesas;
+        });
+    }
     adicionarReceita(receita) {
         return __awaiter(this, void 0, void 0, function* () {
-            validacoes.validarReceitaDespesa(receita);
+            validations_1.default.receitaDespesaSchema.parse(receita);
             const receitaAdicionada = this.condominioRepository.cadastrarReceita(receita);
             return receitaAdicionada;
         });
     }
     adicionarDespesa(despesa) {
         return __awaiter(this, void 0, void 0, function* () {
-            validacoes.validarReceitaDespesa(despesa);
+            validations_1.default.receitaDespesaSchema.parse(despesa);
             const despesaAdicionada = yield this.condominioRepository.cadastrarDespesa(despesa);
             return despesaAdicionada;
         });

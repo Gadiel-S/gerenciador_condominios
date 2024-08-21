@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { formatarValor, formatarData } from '../services/apartamentoServices';
+import { formatarValor } from '../services/apartamentoServices';
 
 const DividaCadastrar: React.FC = () => {
   const [valor, setValor] = useState<string>('');
@@ -17,13 +17,13 @@ const DividaCadastrar: React.FC = () => {
     e.preventDefault();
     const valorFormatado = formatarValor(valor);
     const jurosFormatado = formatarValor(juros);
-    const dataFormatada = formatarData(vencimento);
     const divida = {
       valor: valorFormatado,
       jurosAtrasoDiario: jurosFormatado,
-      dataVencimento: dataFormatada,
+      dataVencimento: vencimento,
       descricao: descricao
     }
+    console.log(JSON.stringify(divida));
     try {
       const response = await fetch(`http://localhost:4000/divida/cadastrar/${idApartamento}`, {
         method: 'POST',

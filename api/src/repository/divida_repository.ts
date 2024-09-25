@@ -10,7 +10,6 @@ export class DividaRepository {
   private dividaRepository = AppDataSource.getRepository(Divida);
 
   public async buscarDividas(idApartamento: string): Promise<Divida[]> {
-    const apartamento = await apartamentoRepository.buscarApartamentoPeloId(idApartamento);
     return await this.dividaRepository.find({
       where: {
         apartamento: {

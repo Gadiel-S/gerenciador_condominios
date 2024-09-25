@@ -19,7 +19,8 @@ services:
   api:
     build:
       context: ./api
-    container_name: api-node
+      dockerfile: Dockerfile
+    container_name: api
     environment:
       DB_HOST: mysql
       DB_PORT: 3306

@@ -14,7 +14,6 @@ export class PagamentoRepository {
   private pagamentoRepository = AppDataSource.getRepository(Pagamento);
 
   public async buscarPagamentos(idApartamento: string): Promise<Pagamento[]> {
-    const apartamento = await apartamentoRepository.buscarApartamentoPeloId(idApartamento);
     return await this.pagamentoRepository.find({
       where: {
         apartamento: {

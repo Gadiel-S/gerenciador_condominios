@@ -2,7 +2,8 @@ import express, { Router } from 'express';
 import { AppDataSource } from './configuration/data_source';
 import homepage from './routes/homepage';
 import cors from "cors";
-
+import helmet from 'helmet';
+import { checkJwt } from './authz/check-jwt';
 import { Gestor } from "./gestor";
 import { ApartamentoRepository } from "./repository/apartamento_repository";
 import { DividaRepository } from "./repository/divida_repository";
@@ -19,6 +20,18 @@ const port = 4000;
 app.use(cors()); // Permite todas as origens
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(helmet());
+
+const createRouter = () => {
+  const router = Router();
+  router.use(checkJwt);
+  return router;
+};
+
+const apartamentoRouter = createRouter();
+const dividaRouter = createRouter();
+const pagamentoRouter = createRouter();
+const condominioRouter = createRouter();
 
 const gestor = new Gestor(
   new ApartamentoRepository(),
@@ -28,10 +41,10 @@ const gestor = new Gestor(
 );
 
 app.use('/', homepage);
-app.use('/apartamento', new ApartamentoRotas(gestor, Router()).criarRotas());
-app.use('/divida', new DividaRotas(gestor, Router()).criarRotas());
-app.use('/pagamento', new PagamentoRotas(gestor, Router()).criarRotas());
-app.use('/condominio', new CondominioRotas(gestor, Router()).criarRotas());
+app.use('/apartamento', new ApartamentoRotas(gestor, apartamentoRouter).criarRotas());
+app.use('/divida', new DividaRotas(gestor, dividaRouter).criarRotas());
+app.use('/pagamento', new PagamentoRotas(gestor, pagamentoRouter).criarRotas());
+app.use('/condominio', new CondominioRotas(gestor, condominioRouter).criarRotas());
 
 AppDataSource.initialize()
   .then(() => {

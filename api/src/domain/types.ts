@@ -21,3 +21,14 @@ export interface CondominioProps {
   valor: number;
   dataEmissao: string;
 }
+
+export interface UsuarioLogin {
+  nomeUsuario: string;
+  senha: string;
+}
+
+export interface UsuarioCadastro {
+  nomeUsuario: string;
+  email: string;
+  senha: string;
+}

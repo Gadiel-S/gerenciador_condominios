@@ -18,6 +18,10 @@ h1, h2 {
   text-align: center;
 }
 
+h2 {
+  margin-top: 20px;
+}
+
 p {
   color: #003049;
 }
@@ -88,7 +92,7 @@ nav {
   flex-wrap: wrap;
   gap: 20px;
   padding: 10px;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .apartamento {
@@ -112,8 +116,13 @@ nav {
   padding: 8px 12px;
 }
 
-.deletar-btn {
+.deletar-btn, .logout-btn {
   background-color: #9d0208;
+}
+
+.login-btn {
+  padding: 14px 30px;
+  font-size: 16px;
 }
 
 /* Estilos Formulários */

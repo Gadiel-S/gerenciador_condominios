@@ -2,6 +2,8 @@
 
 Este é um sistema full stack para gerenciar apartamentos e suas finanças. Desenvolvido com React, Node.js, Express, TypeScript, MySQL e TypeORM, o sistema permite o armazenamento e a manipulação de informações sobre apartamentos, pagamentos, dívidas e a administração de condomínios. O sistema possui uma tela de login que utiliza o Auth0, sendo necessário logar para acessá-lo.
 
+Esse projeto está atualmente em processo de refatoração para Java.
+
 ## Funcionalidades
 
 - **Gestão de Apartamentos**: Visualizar, adicionar e deletar apartamentos.

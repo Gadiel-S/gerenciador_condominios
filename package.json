@@ -4,7 +4,7 @@
   "description": "",
   "main": "main.ts",
   "scripts": {
-    "start:api": "npm run start --prefix api",
+    "start:api": "npm run start --prefix api-node",
     "start:client": "npm run dev --prefix client",
     "start": "npm-run-all --parallel start:api start:client"
   },

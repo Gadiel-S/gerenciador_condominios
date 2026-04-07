@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS despesas (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    valor DECIMAL(10,2) NOT NULL,
+    data_emissao DATE NOT NULL
+)
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_unicode_ci;

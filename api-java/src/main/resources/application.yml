@@ -4,10 +4,10 @@ cors:
   originPatterns: http://localhost:8080,http://localhost:3000,https://github.com/Gadiel-S
 spring:
   application:
-    name: api-java
+    name: gerenciador-condominios
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/condominios_gestao?useTimezone=true&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/condominios_db?useTimezone=true&serverTimezone=UTC
     username: ${DB_USER}
     password: ${DB_PASSWORD}
   jpa:

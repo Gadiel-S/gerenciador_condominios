@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS apartamentos (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    numero INT NOT NULL,
+    morador VARCHAR(255) NOT NULL
+)
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_unicode_ci;

@@ -1,10 +1,13 @@
-export const deletarReceita = async (id: string) => {
+export const deletarReceita = async (id: string, accessToken: string) => {
   const confirmacao = window.confirm('Você tem certeza que deseja deletar essa Receita?');
   if(!confirmacao) return;
 
   try {
     const response = await fetch(`http://localhost:4000/condominio/receita/deletar/${id}`, {
       method: 'delete',
+      headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
     });
 
     if(!response.ok) {
@@ -18,13 +21,16 @@ export const deletarReceita = async (id: string) => {
   }
 }
 
-export const deletarDespesa = async (id: string) => {
+export const deletarDespesa = async (id: string, accessToken: string) => {
   const confirmacao = window.confirm('Você tem certeza que deseja deletar essa Despesa?');
   if(!confirmacao) return;
 
   try {
     const response = await fetch(`http://localhost:4000/condominio/despesa/deletar/${id}`, {
       method: 'delete',
+      headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
     });
 
     if(!response.ok) {

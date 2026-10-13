@@ -21,7 +21,6 @@ class DividaRepository {
     }
     buscarDividas(idApartamento) {
         return __awaiter(this, void 0, void 0, function* () {
-            const apartamento = yield apartamentoRepository.buscarApartamentoPeloId(idApartamento);
             return yield this.dividaRepository.find({
                 where: {
                     apartamento: {

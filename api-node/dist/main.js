@@ -30,6 +30,8 @@ const express_1 = __importStar(require("express"));
 const data_source_1 = require("./configuration/data_source");
 const homepage_1 = __importDefault(require("./routes/homepage"));
 const cors_1 = __importDefault(require("cors"));
+const helmet_1 = __importDefault(require("helmet"));
+const check_jwt_1 = require("./authz/check-jwt");
 const gestor_1 = require("./gestor");
 const apartamento_repository_1 = require("./repository/apartamento_repository");
 const divida_repository_1 = require("./repository/divida_repository");
@@ -44,12 +46,22 @@ const port = 4000;
 app.use((0, cors_1.default)()); // Permite todas as origens
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
+app.use((0, helmet_1.default)());
+const createRouter = () => {
+    const router = (0, express_1.Router)();
+    router.use(check_jwt_1.checkJwt);
+    return router;
+};
+const apartamentoRouter = createRouter();
+const dividaRouter = createRouter();
+const pagamentoRouter = createRouter();
+const condominioRouter = createRouter();
 const gestor = new gestor_1.Gestor(new apartamento_repository_1.ApartamentoRepository(), new divida_repository_1.DividaRepository(), new pagamento_repository_1.PagamentoRepository(), new condominio_repository_1.CondominioRepository());
 app.use('/', homepage_1.default);
-app.use('/apartamento', new apartamentoRoutes_1.default(gestor, (0, express_1.Router)()).criarRotas());
-app.use('/divida', new dividaRoutes_1.default(gestor, (0, express_1.Router)()).criarRotas());
-app.use('/pagamento', new pagamentoRoutes_1.default(gestor, (0, express_1.Router)()).criarRotas());
-app.use('/condominio', new condominioRoutes_1.default(gestor, (0, express_1.Router)()).criarRotas());
+app.use('/apartamento', new apartamentoRoutes_1.default(gestor, apartamentoRouter).criarRotas());
+app.use('/divida', new dividaRoutes_1.default(gestor, dividaRouter).criarRotas());
+app.use('/pagamento', new pagamentoRoutes_1.default(gestor, pagamentoRouter).criarRotas());
+app.use('/condominio', new condominioRoutes_1.default(gestor, condominioRouter).criarRotas());
 data_source_1.AppDataSource.initialize()
     .then(() => {
     console.log('Banco de dados conectado!');

@@ -40,9 +40,14 @@ const ListaDespesas: React.FC = () => {
   }, [getAccessTokenSilently]);
 
   const handleDeletarDespesa = async (id: string) => {
-    const result = await deletarDespesa(id);
+    const accessToken = await getAccessTokenSilently({
+          authorizationParams: {
+              audience: 'https://gerenciador.condominios',
+              },
+          });
+    const result = await deletarDespesa(id, accessToken);
     if(result) {
-      setDespesas((despesasAnt) => despesasAnt.filter((despesasNovas) => despesasNovas.id !== id));
+      setDespesas((despesasAntigas) => despesasAntigas.filter((despesasNovas) => despesasNovas.id !== id));
     }
   }
 

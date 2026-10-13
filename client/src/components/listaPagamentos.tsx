@@ -48,9 +48,14 @@ const ListaPagamentos: React.FC = () => {
 
 
   const handleDeletarPagamento = async (id: string) => {
-    const result = await deletarPagamento(id);
+    const accessToken = await getAccessTokenSilently({
+          authorizationParams: {
+              audience: 'https://gerenciador.condominios',
+              },
+          });
+    const result = await deletarPagamento(id, accessToken);
     if(result) {
-      setPagamentos((pagamentosAnt) => pagamentosAnt.filter((pagamentosNovos) => pagamentosNovos.id !== id));
+      setPagamentos((pagamentosAntigos) => pagamentosAntigos.filter((pagamentosNovos) => pagamentosNovos.id !== id));
     }
   }
 

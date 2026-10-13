@@ -42,9 +42,14 @@ const ListaApartamentos: React.FC = () => {
   }, [getAccessTokenSilently]);
 
   const handleDeletarApartamento = async (id: string) => {
-    const result = await deletarApartamento(id);
+    const accessToken = await getAccessTokenSilently({
+          authorizationParams: {
+              audience: 'https://gerenciador.condominios',
+              },
+          });
+    const result = await deletarApartamento(id, accessToken);
     if(result) {
-      setApartamentos((apartamentosAnt) => apartamentosAnt.filter((apartamentosNovos) => apartamentosNovos.id !== id));
+      setApartamentos((apartamentosAntigos) => apartamentosAntigos.filter((apartamentosNovos) => apartamentosNovos.id !== id));
     }
   }
 

@@ -40,9 +40,14 @@ const ListaReceitas: React.FC = () => {
   }, [getAccessTokenSilently]);
 
   const handleDeletarReceita = async (id: string) => {
-    const result = await deletarReceita(id);
+      const accessToken = await getAccessTokenSilently({
+          authorizationParams: {
+              audience: 'https://gerenciador.condominios',
+              },
+          });
+    const result = await deletarReceita(id, accessToken);
     if(result) {
-      setReceitas((receitasAnt) => receitasAnt.filter((receitasNovas) => receitasNovas.id !== id));
+      setReceitas((receitasAntigas) => receitasAntigas.filter((receitasNovas) => receitasNovas.id !== id));
     }
   }
 

@@ -1,10 +1,13 @@
-export const deletarApartamento = async (id: string) => {
+export const deletarApartamento = async (id: string, accessToken: string) => {
   const confirmacao = window.confirm('Você tem certeza que deseja deletar esse apartamento?');
   if(!confirmacao) return;
 
   try {
     const response = await fetch(`http://localhost:4000/apartamento/deletar/${id}`, {
       method: 'delete',
+      headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
     });
 
     if(!response.ok) {
@@ -18,13 +21,16 @@ export const deletarApartamento = async (id: string) => {
   }
 }
 
-export const deletarDivida = async (id: string) => {
+export const deletarDivida = async (id: string, accessToken: string) => {
   const confirmacao = window.confirm('Você tem certeza que deseja deletar essa dívida?');
   if(!confirmacao) return;
 
   try {
     const response = await fetch(`http://localhost:4000/divida/deletar/${id}`, {
       method: 'delete',
+      headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
     });
 
     if(!response.ok) {
@@ -38,13 +44,16 @@ export const deletarDivida = async (id: string) => {
   }
 }
 
-export const deletarPagamento = async (id: string) => {
+export const deletarPagamento = async (id: string, accessToken: string) => {
   const confirmacao = window.confirm('Você tem certeza que deseja deletar esse pagamento?');
   if(!confirmacao) return;
 
   try {
     const response = await fetch(`http://localhost:4000/pagamento/deletar/${id}`, {
       method: 'delete',
+      headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
     });
 
     if(!response.ok) {

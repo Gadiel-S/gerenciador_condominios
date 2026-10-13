@@ -44,9 +44,14 @@ const ListaDividas: React.FC = () => {
   }, [idApartamento, numeroApartamento, getAccessTokenSilently]);
 
   const handleDeletarDivida = async (id: string) => {
-    const result = await deletarDivida(id);
+    const accessToken = await getAccessTokenSilently({
+          authorizationParams: {
+              audience: 'https://gerenciador.condominios',
+              },
+          });
+    const result = await deletarDivida(id, accessToken);
     if(result) {
-      setDividas((dividasAnt) => dividasAnt.filter((dividasNovas) => dividasNovas.id !== id));
+      setDividas((dividasAntigas) => dividasAntigas.filter((dividasNovas) => dividasNovas.id !== id));
     }
   }
 

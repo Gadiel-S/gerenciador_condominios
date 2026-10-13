@@ -25,7 +25,6 @@ class PagamentoRepository {
     }
     buscarPagamentos(idApartamento) {
         return __awaiter(this, void 0, void 0, function* () {
-            const apartamento = yield apartamentoRepository.buscarApartamentoPeloId(idApartamento);
             return yield this.pagamentoRepository.find({
                 where: {
                     apartamento: {
